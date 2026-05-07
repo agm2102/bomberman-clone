@@ -126,15 +126,15 @@ class Map:
                 return True
         return False
 
-    def draw(self, screen):
+    def draw(self, screen, camera=None):
         for block in self.blocks_list:
-            block.draw(screen)
+            block.draw(screen, camera)
 
-        if self.door.is_visible():
-             self.door.draw(screen)
+        if self.door is not None and self.door.is_visible():
+            self.door.draw(screen, camera)
 
         if self.item is not None and self.item.is_visible():
-            self.item.draw(screen)
+            self.item.draw(screen, camera)
 
     def update(self):
         for block in self.blocks_list:

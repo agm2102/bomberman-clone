@@ -1,10 +1,11 @@
-from game_map.Door import Door
 from systems.CollisionManager import CollisionManager
-
 
 class Stage:
 
-    def __init__(self, screen, sprite_manager, player, enemies, game_map):
+    def __init__(self, screen, sprite_manager, player, enemies, game_map, camera):
+        self.camera = camera
+        self.time_stage = 200 #seconds
+        self.stage_finished = False
         self.screenGame = screen
         self.sprite_manager = sprite_manager
 
@@ -17,26 +18,26 @@ class Stage:
         self.bomb_list = self.player.get_list_bombs()
         self.explosion_list = []
         self.blocks_list = self.game_map.get_blocks_list()
+
         self.collision_manager = CollisionManager(self.player, self.enemyList, self.bomb_list, self.explosion_list,
-                                                  self.blocks_list, self.map_item)
+                                                  self.blocks_list, self.map_item, self.door)
 
     def draw(self):
-        self.game_map.draw(self.screenGame)
-        self.player.draw(self.screenGame)
+        self.game_map.draw(self.screenGame, self.camera)  # ← passa camera
+
+        self.player.draw(self.screenGame, self.camera)
 
         for enemy in self.enemyList:
-            if self.enemyList:
-                enemy.draw(self.screenGame)
+            enemy.draw(self.screenGame, self.camera)
 
         for bomb in self.bomb_list:
-            if self.bomb_list:
-                bomb.draw(self.screenGame)
+            bomb.draw(self.screenGame, self.camera)
 
-        if self.explosion_list:
-            for explosion_part in self.explosion_list:
-                explosion_part.draw(self.screenGame)
+        for explosion_part in self.explosion_list:
+            explosion_part.draw(self.screenGame, self.camera)
 
     def update(self, events):
+
         self.player.update(events)
 
         for enemy in self.enemyList:
@@ -47,6 +48,7 @@ class Stage:
 
         self.game_map.update()
 
+        self.check_all_enemies_is_dead()
         self.remove_game_objects()
         self.collision_manager.check()
 
@@ -62,8 +64,6 @@ class Stage:
         for enemy in self.enemyList[:]:
             if enemy.get_is_dead() is True:
                 self.enemyList.remove(enemy)
-                if len(self.enemyList) == 0:
-                    self.door.set_locked(False)
 
         for explosion_part in self.explosion_list[:]:
             explosion_part.update()
@@ -78,6 +78,11 @@ class Stage:
             self.game_map.remove_item()
 
     def is_stage_finished(self):
-        if self.door.is_locked() is False:
-            return True
-        return False
+       return self.stage_finished
+
+    def check_all_enemies_is_dead(self):
+        if len(self.enemyList) == 0:
+            self.door.set_locked(False)
+
+    def timer_stage(self):
+        pass

@@ -6,8 +6,8 @@ class GameScreen:
     def __init__(self, screen, sprite_manager):
         self.sprite_manager = sprite_manager
         self.screen = screen
-        self.hud = Hud(self.screen, 0, 0, 0, self.sprite_manager)
-        self.stage_manager = StageManager(screen, sprite_manager)
+        self.hud = Hud(self.screen, self.sprite_manager)
+        self.stage_manager = StageManager(screen, sprite_manager, self.hud)
 
     def draw(self):
         self.hud.draw()

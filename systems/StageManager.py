@@ -5,10 +5,12 @@ from entities.characters.bomberman.Bomberman import Bomberman
 from entities.characters.enemies.Ballom import Ballom
 from entities.characters.enemies.Onil import Onil
 from game_map.Map import Map
+from systems.Camera import Camera
 from systems.Stage import Stage
 
 class CreateEnemies:
-    def __init__(self, game_map, sprite_manager):
+    def __init__(self, game_map, sprite_manager, ):
+
         self.sprite_manager = sprite_manager
         self.game_map = game_map
         self.enemies = []
@@ -47,7 +49,8 @@ class CreateEnemies:
 
 class StageManager:
 
-    def __init__(self, screen, sprite_manager):
+    def __init__(self, screen, sprite_manager, hud):
+        self.HUD = hud
         self.STAGES = {
             1: {"enemies": {"Ballom": 6}, "item": "fire"},
             2: {"enemies": {"Ballom": 3, "Onil": 3}, "item": "bomb"},
@@ -122,7 +125,7 @@ class StageManager:
             "flame_pass": 6,
             "mystery": 7
         }
-
+        self.camera = Camera()
         self.screen = screen
         self.sprite_manager = sprite_manager
 
@@ -144,6 +147,7 @@ class StageManager:
 
     def update(self, events):
         self.stage.update(events)
+        self.camera.update(self.player)
 
     def create_stage(self):
         stage_number = 2
@@ -155,4 +159,4 @@ class StageManager:
         if "Onil" in self.STAGES[stage_number]["enemies"]:
             self.enemies.onil(self.STAGES[stage_number]["enemies"]["Onil"])
 
-        self.stage = Stage(self.screen, self.sprite_manager, self.player, self.enemies.get_enemies(), self.game_map)
+        self.stage = Stage(self.screen, self.sprite_manager, self.player, self.enemies.get_enemies(), self.game_map, self.camera)

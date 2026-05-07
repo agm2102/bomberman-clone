@@ -4,7 +4,12 @@ from config.Settings import Settings
 
 class Hud:
 
-    def __init__(self, screen, time, score, left_lifes, sprite_manager):
+    def __init__(self, screen, sprite_manager):
+
+        self.time = 0
+        self.score = 0
+        self.left = 0
+
         self.screen = screen
         self.GRAY = (171, 171, 171)
         self.sprites = sprite_manager.get("letters_hud")
@@ -43,3 +48,6 @@ class Hud:
 
         for i, idx in enumerate(indices_left):
             self.hud_left_lifes.append((self.sprites[idx], (x_left + i * espacamento, y)))
+
+    def set_time(self, time):
+        self.time = time

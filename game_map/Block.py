@@ -26,9 +26,6 @@ class Block(BaseEntity):
         if self.animation_controller.finished():
             self.is_destroyed = True
 
-    def draw(self, screen):
-        screen.blit(self.sprite, (self.x, self.y))
-
     def is_solid(self):
         return self.solid
 
