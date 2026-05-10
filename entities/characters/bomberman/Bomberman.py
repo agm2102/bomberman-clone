@@ -8,6 +8,9 @@ class Bomberman(BaseCharacter):
     def __init__(self, x, y, is_alive, sprite_manager, game_map, speed, lives):
         super().__init__(x, y, game_map, sprite_manager, is_alive, speed)
 
+        self.invencible_timer = 0
+        self.INVENCIBLE_DURATION = 120
+
         self.QTD_BOMBS_LIMIT_MAX = 8
         self.RANGE_EXPLOSION_MAX = 3
         self.SPEED_MAX = 4
@@ -27,6 +30,12 @@ class Bomberman(BaseCharacter):
         self.flame_pass = False
 
         self.add_animations()
+
+    def decrease_qtd_lives(self):
+        if self.invencible_timer > 0:  # ainda invencível
+            return
+        self.lives -= 1
+        self.invencible_timer = self.INVENCIBLE_DURATION  # ativa invencibilidade
 
     def spawn_bomb(self):
         tile = Settings.SPRITE_BLOCK_SIZE
@@ -64,7 +73,18 @@ class Bomberman(BaseCharacter):
         self.animation_controller.add_animation("down_walk", Animation(frames[3:6], 5, True))
         self.animation_controller.add_animation("death", Animation(frames[12:19], 20, False))
 
+    def draw(self, screen, camera=None):
+        # pisca quando invencível — alterna visível/invisível a cada 5 frames
+        if self.invencible_timer > 0 and self.invencible_timer % 10 < 5:
+            return  # não desenha — efeito de piscar
+
+        pos = camera.apply(self) if camera else (self.x, self.y)
+        screen.blit(self.sprite, pos)
+
     def update(self, events = None):
+        if self.invencible_timer > 0:
+            self.invencible_timer -= 1
+
         self._check_collision_characters_bombs()
 
         if not self.is_alive:
@@ -97,6 +117,9 @@ class Bomberman(BaseCharacter):
 
     def get_list_bombs(self):
         return self.bombs_list
+
+    def get_lives(self):
+        return self.lives
 
     def set_qtd_bombs(self, qtd_bomb):
         self.qtd_bombs += qtd_bomb

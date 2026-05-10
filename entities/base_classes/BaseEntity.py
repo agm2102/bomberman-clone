@@ -18,9 +18,6 @@ class BaseEntity:
 
 
     def draw(self, screen, camera=None):
-        if self.sprite is None:
-            print(f"[AVISO] {self.__class__.__name__} sem sprite!")
-            return
         pos = camera.apply(self) if camera else (self.x, self.y)
         screen.blit(self.sprite, pos)
 

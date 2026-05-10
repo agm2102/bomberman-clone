@@ -15,3 +15,5 @@ class GameScreen:
 
     def update(self, events):
         self.stage_manager.update(events)
+        self.hud.set_time(self.stage_manager.get_stage_timer())
+        self.hud.set_left(self.stage_manager.get_player_lives())

@@ -4,7 +4,9 @@ class Stage:
 
     def __init__(self, screen, sprite_manager, player, enemies, game_map, camera):
         self.camera = camera
-        self.time_stage = 200 #seconds
+        self.time_stage_max_mili = 200 * 60
+        self.time_stage_seconds = 200
+        self.timer = 0
         self.stage_finished = False
         self.screenGame = screen
         self.sprite_manager = sprite_manager
@@ -52,6 +54,15 @@ class Stage:
         self.remove_game_objects()
         self.collision_manager.check()
 
+        self.timer_stage()
+
+    def timer_stage(self):
+        if self.timer % 60 == 0:
+            self.time_stage_seconds -= 1
+        self.timer+=1
+
+    def get_timer(self):
+        return self.time_stage_seconds
 
     def remove_game_objects(self):
         for bomb in self.bomb_list[:]:  # itera sobre uma cópia da lista
@@ -83,6 +94,3 @@ class Stage:
     def check_all_enemies_is_dead(self):
         if len(self.enemyList) == 0:
             self.door.set_locked(False)
-
-    def timer_stage(self):
-        pass

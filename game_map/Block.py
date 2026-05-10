@@ -1,5 +1,6 @@
 from entities.base_classes.BaseEntity import BaseEntity
 from systems.Animation import Animation
+
 class Block(BaseEntity):
     def __init__(self, x, y, sprite, solid, breakable, sprite_manager):
         super().__init__(x, y, sprite_manager)

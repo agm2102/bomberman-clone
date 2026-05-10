@@ -130,7 +130,7 @@ class StageManager:
         self.sprite_manager = sprite_manager
 
         self.game_map = Map(self.sprite_manager)
-        self.player = Bomberman(Settings.SPRITE_BLOCK_SIZE * 1,Settings.SPRITE_BLOCK_SIZE * 1 + Settings.HUD_HEIGHT, True, sprite_manager, self.game_map, 3, 1)
+        self.player = Bomberman(Settings.SPRITE_BLOCK_SIZE * 1,Settings.SPRITE_BLOCK_SIZE * 1 + Settings.HUD_HEIGHT, True, sprite_manager, self.game_map, 3, 2)
 
         self.enemies = CreateEnemies(self.game_map, sprite_manager)
 
@@ -149,8 +149,14 @@ class StageManager:
         self.stage.update(events)
         self.camera.update(self.player)
 
+    def get_player_lives(self):
+        return self.player.get_lives()
+
+    def get_stage_timer(self):
+        return self.stage.get_timer()
+
     def create_stage(self):
-        stage_number = 2
+        stage_number = 1
 
         self.game_map.spawn_item_on_map(self.type_item[self.STAGES[stage_number]["item"]])
 

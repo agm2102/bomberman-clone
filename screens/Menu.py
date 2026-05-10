@@ -9,10 +9,14 @@ class Menu:
         self.sprite_menu = sprite_manager.get("screens")[0]
         self.sprite_selector = sprite_manager.get("simbol")[0]
         self.PRETO = (0, 0, 0)
+
+        S = Settings.SCALE
+
         self.position_selector = {
-            "start" : (268, 602),
-            "continue" : (520, 602)
+            "start": (66 * S, 150 * S),
+            "continue": (129 * S, 150 * S)
         }
+
         self.position_selection = self.position_selector["start"]
         self.black_square_position_x, self.black_square_position_y = self.position_selector["continue"]
 

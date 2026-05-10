@@ -1,4 +1,5 @@
 from entities.base_classes.BaseCharacter import BaseCharacter
+from entities.characters.bomberman.Bomberman import Bomberman
 
 
 class CollisionManager:
@@ -23,7 +24,7 @@ class CollisionManager:
     def _check_collision_explosion_enemies_player(self):
         for explosion_part in self.explosion_list:
             if self.bomberman.get_rect().colliderect(explosion_part.get_rect()) and self.bomberman.flame_pass is False:
-                self.bomberman.death()
+                self.bomberman.decrease_qtd_lives()
             for enemy in self.enemies_list:
                 if explosion_part.get_rect().colliderect(enemy.get_rect()):
                     enemy.death()
