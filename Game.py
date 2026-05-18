@@ -35,7 +35,7 @@ class Game:
             self.update()
             self.render()
             # controla FPS (60)
-            self.clock.tick(60)
+            self.clock.tick(Settings.FRAMES_PER_SECOND)
         pygame.quit()
 
     def handle_events(self):

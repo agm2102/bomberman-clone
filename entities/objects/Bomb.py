@@ -10,9 +10,9 @@ class Bomb(BaseEntity):
         super().__init__(x, y, sprite_manager)
 
         self.game_map = game_map
-        self.rect = pygame.Rect(x, y, Settings.SPRITE_CHARACTER_OBJECTS_SIZE, Settings.SPRITE_CHARACTER_OBJECTS_SIZE)
+        self.rect = pygame.Rect(x, y, Settings.SPRITE_SIZE, Settings.SPRITE_SIZE)
 
-        self._bomb_timer_limit = 180
+        self._bomb_timer_limit = 150
         self._bomb_timer = 0
         self.has_detonator = False
         self._is_exploded = False
@@ -44,7 +44,7 @@ class Bomb(BaseEntity):
 
     def create_explosion(self):
         frames = self.sprite_manager.get("explosion")
-        size = Settings.SPRITE_CHARACTER_OBJECTS_SIZE
+        size = Settings.SPRITE_SIZE
 
         # core
         self.list_explosion.append(Explosion(self.x, self.y, "core", frames[0:7]))

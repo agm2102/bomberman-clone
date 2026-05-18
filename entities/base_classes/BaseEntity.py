@@ -13,14 +13,10 @@ class BaseEntity:
         self.sprite_manager = sprite_manager
         self.sprite = None
 
-        self.to_index = 0
-        self.from_index = 0
-
-
     def draw(self, screen, camera=None):
         pos = camera.apply(self) if camera else (self.x, self.y)
         screen.blit(self.sprite, pos)
 
     def get_rect(self):
-        self.rect = pygame.Rect(self.x, self.y, Settings.SPRITE_BLOCK_SIZE, Settings.SPRITE_BLOCK_SIZE)
+        self.rect = pygame.Rect(self.x, self.y, Settings.SPRITE_SIZE, Settings.SPRITE_SIZE)
         return self.rect

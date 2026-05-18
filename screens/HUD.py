@@ -64,7 +64,7 @@ class Hud:
         total_score = (len(indices_score) + 1 + len(score_digits)) * espacamento
         total_left  = (len(indices_left)  + 1 + len(left_digits))  * espacamento
 
-        padding = espacamento * 1
+        padding = espacamento * 2
         total_width = total_time + total_score + total_left + padding * 2
         x_start = (Settings.SCREEN_WIDTH - total_width) // 2
 

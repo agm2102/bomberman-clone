@@ -58,8 +58,15 @@ class Stage:
 
     def timer_stage(self):
         if self.timer % 60 == 0:
+            if self.time_stage_seconds == 0:
+                self.spawn_potans()
+                return
             self.time_stage_seconds -= 1
+
         self.timer+=1
+
+    def spawn_potans(self):
+        pass
 
     def get_timer(self):
         return self.time_stage_seconds

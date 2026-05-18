@@ -1,5 +1,4 @@
-import pygame
-from config.Settings import Settings
+
 from entities.base_classes.BaseEntity import BaseEntity
 from systems.Animation import Animation
 
@@ -9,7 +8,6 @@ class Explosion(BaseEntity):
         self.is_finished = False
         self.x = x
         self.y = y
-        self.rect = pygame.Rect(x, y, Settings.SPRITE_CHARACTER_OBJECTS_SIZE, Settings.SPRITE_CHARACTER_OBJECTS_SIZE)
         self.animation_controller.add_animation(explosion_part, Animation(frames, 7, False))
 
     def update(self):
@@ -18,3 +16,5 @@ class Explosion(BaseEntity):
 
         if self.animation_controller.finished():
             self.is_finished = True
+    def draw(self, screen, camera=None):
+        super().draw(screen, camera)

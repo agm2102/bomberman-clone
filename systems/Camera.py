@@ -8,7 +8,7 @@ class Camera:
     def update(self, player):
         self.offset_x = player.x - Settings.SCREEN_WIDTH // 2
         self.offset_x = max(0, self.offset_x)
-        self.offset_x = min(self.offset_x, (Settings.MAP_COLS * Settings.SPRITE_BLOCK_SIZE) - Settings.SCREEN_WIDTH)
+        self.offset_x = min(self.offset_x, (Settings.MAP_COLS * Settings.SPRITE_SIZE) - Settings.SCREEN_WIDTH)
 
-    def apply(self, objeto):
-        return objeto.x - self.offset_x, objeto.y
+    def apply(self, object):
+        return object.x - self.offset_x, object.y

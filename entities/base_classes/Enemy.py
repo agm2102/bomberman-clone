@@ -1,13 +1,23 @@
 import random
 from entities.base_classes.BaseCharacter import BaseCharacter
+from systems.Animation import Animation
 
-class BaseEnemy(BaseCharacter):
-    def __init__(self, x, y, sprite_manager, game_map, is_alive, speed):
-        super().__init__(x, y, game_map, sprite_manager, is_alive, speed)
 
-        self.speed = speed
+class Enemy(BaseCharacter):
+    def __init__(self, x, y, sprite_manager, game_map, is_alive, enemy_name):
+        super().__init__(x, y, game_map, sprite_manager, is_alive)
+
+        self.speed = 2
         self.dir = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
-        self.animation_speed = 25
+        self.animation_speed = 30
+
+        self.frames = sprite_manager.get(enemy_name)
+
+        self.animation_controller.add_animation("right_walk", Animation(self.frames[0:4], self.animation_speed, True))
+        self.animation_controller.add_animation("left_walk", Animation(self.frames[4:8], self.animation_speed, True))
+        self.animation_controller.add_animation("up_walk", Animation(self.frames[4:8], self.animation_speed, True))
+        self.animation_controller.add_animation("down_walk", Animation(self.frames[0:4], self.animation_speed, True))
+        self.animation_controller.add_animation("death", Animation(self.frames[8:13], self.animation_speed * 3, False))
 
     def update(self, bombs_list):
         self._check_collision_characters_bombs()
@@ -38,7 +48,7 @@ class BaseEnemy(BaseCharacter):
         new_x = self.x + dx * self.speed
         new_y = self.y + dy * self.speed
 
-        if not self._game_map.is_walkable_position(new_x, new_y, bombs_list):
+        if not self._game_map.is_walkable_position(new_x, new_y, bombs_list, self.wall_pass):
 
             self.dir = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
 

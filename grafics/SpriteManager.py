@@ -5,9 +5,9 @@ from grafics.LoadImages import LoadImages
 class SpriteManager:
     _instance = None  # Singleton — carrega sprites apenas uma vez
 
-    CHARACTER_SIZE = Settings.SPRITE_CHARACTER_OBJECTS_SIZE
-    BLOCK_SIZE      = Settings.SPRITE_BLOCK_SIZE
-    OBJECTS_SIZE      = Settings.SPRITE_BLOCK_SIZE
+    CHARACTER_SIZE = Settings.SPRITE_SIZE
+    BLOCK_SIZE      = Settings.SPRITE_SIZE
+    OBJECTS_SIZE      = Settings.SPRITE_SIZE
 
     SCREEN_WIDTH = Settings.SCREEN_WIDTH
     SCREEN_HEIGHT = Settings.SCREEN_HEIGHT
@@ -20,8 +20,14 @@ class SpriteManager:
         "bomberman":   ("assets/sprites/bomberman/", CHARACTER_SIZE, CHARACTER_SIZE),
 
         # Inimigos
-        "ballom":      ("assets/sprites/enemies/ballom/", CHARACTER_SIZE, CHARACTER_SIZE),
-        "onil":        ("assets/sprites/enemies/onil/",   CHARACTER_SIZE, CHARACTER_SIZE),
+        "Ballom":      ("assets/sprites/enemies/ballom/", CHARACTER_SIZE, CHARACTER_SIZE),
+        "Onil":        ("assets/sprites/enemies/onil/",   CHARACTER_SIZE, CHARACTER_SIZE),
+        "Dahl":          ("assets/sprites/enemies/dahl/", CHARACTER_SIZE, CHARACTER_SIZE),
+        "Doria":         ("assets/sprites/enemies/doria/", CHARACTER_SIZE, CHARACTER_SIZE),
+        "Minvo": ("assets/sprites/enemies/minvo/", CHARACTER_SIZE, CHARACTER_SIZE),
+        "Ovape": ("assets/sprites/enemies/ovape/", CHARACTER_SIZE, CHARACTER_SIZE),
+        "Pass": ("assets/sprites/enemies/pass/", CHARACTER_SIZE, CHARACTER_SIZE),
+        "Pontan": ("assets/sprites/enemies/pontan/", CHARACTER_SIZE, CHARACTER_SIZE),
 
         # Cenário
         "map":           ("assets/sprites/map/", BLOCK_SIZE, BLOCK_SIZE),

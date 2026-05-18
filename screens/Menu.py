@@ -13,8 +13,8 @@ class Menu:
         S = Settings.SCALE
 
         self.position_selector = {
-            "start": (66 * S, 150 * S),
-            "continue": (129 * S, 150 * S)
+            "start": (67 * S, 150 * S),
+            "continue": (130 * S, 150 * S)
         }
 
         self.position_selection = self.position_selector["start"]

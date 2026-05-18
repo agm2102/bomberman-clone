@@ -56,18 +56,18 @@ class Map:
         for i in range(len(self.mapa)):
             for j in range(len(self.mapa[0])):
                 if self.mapa[i][j] == 1:
-                    block = Block( j * Settings.SPRITE_BLOCK_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_BLOCK_SIZE,
+                    block = Block(j * Settings.SPRITE_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_SIZE,
                                   sprite_manager.get("map")[BLOCK_SOLID], True, False, sprite_manager)
                     self.blocks_list.append(block)
 
                 elif self.mapa[i][j] == 0:
                     # Sempre desenha o chão
-                    block = Block(j * Settings.SPRITE_BLOCK_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_BLOCK_SIZE,
+                    block = Block(j * Settings.SPRITE_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_SIZE,
                                   sprite_manager.get("map")[GROUND], False, False, sprite_manager)
                     self.blocks_list.append(block)
 
                     if (not (bomberman_is_spawn_area(i, j) or enemies_is_spawn_area(i, j))) and random.random() > 0.9:
-                        block = Block(j * Settings.SPRITE_BLOCK_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_BLOCK_SIZE,
+                        block = Block(j * Settings.SPRITE_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_SIZE,
                                       sprite_manager.get("map")[BLOCK_DESTRUCTIBLE], True, True, sprite_manager)
                         self.blocks_list.append(block)
 
@@ -77,14 +77,17 @@ class Map:
 
         self.create_door()
 
-    def is_walkable_position(self, x, y, bomb_list):
-        size_character = Settings.SPRITE_CHARACTER_OBJECTS_SIZE
+    def is_walkable_position(self, x, y, bomb_list, wall_pass):
+        size_character = Settings.SPRITE_SIZE
         character_rect = pygame.Rect(x, y, size_character, size_character)
 
         for block in self.blocks_list:
             if block.is_solid():
 
                 block_rect = block.get_rect()
+                if block.is_breakable() and wall_pass:
+                    if block_rect.colliderect(character_rect):
+                        return True
                 if block_rect.colliderect(character_rect):
                     return False
 

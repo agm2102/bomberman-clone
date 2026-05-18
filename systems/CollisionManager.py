@@ -17,7 +17,7 @@ class CollisionManager:
         for enemy in self.enemies_list:
             if enemy.get_is_alive():
                 if self.bomberman.get_rect().colliderect(enemy.get_rect()):
-                    self.bomberman.death()
+                    self.bomberman.decrease_qtd_lives()
                     break
 
 

@@ -5,8 +5,8 @@ from entities.objects.Bomb import Bomb
 from systems.Animation import Animation
 class Bomberman(BaseCharacter):
 
-    def __init__(self, x, y, is_alive, sprite_manager, game_map, speed, lives):
-        super().__init__(x, y, game_map, sprite_manager, is_alive, speed)
+    def __init__(self, x, y, is_alive, sprite_manager, game_map, lives):
+        super().__init__(x, y, game_map, sprite_manager, is_alive)
 
         self.invencible_timer = 0
         self.INVENCIBLE_DURATION = 120
@@ -23,8 +23,8 @@ class Bomberman(BaseCharacter):
         self.qtd_bombs = 0
         self.qtd_bombs_limit = 1
         self.range_explosion = 1
+        self._speed = 3
 
-        self.wall_pass = False
         self.bomb_pass = False
         self.detonator = False
         self.flame_pass = False
@@ -38,7 +38,7 @@ class Bomberman(BaseCharacter):
         self.invencible_timer = self.INVENCIBLE_DURATION  # ativa invencibilidade
 
     def spawn_bomb(self):
-        tile = Settings.SPRITE_BLOCK_SIZE
+        tile = Settings.SPRITE_SIZE
         x = round(self.x / tile) * tile
         y = round(self.y / tile) * tile
 
@@ -106,7 +106,7 @@ class Bomberman(BaseCharacter):
         new_x = self.x + dx * self._speed
         new_y = self.y + dy * self._speed
 
-        if self._game_map.is_walkable_position(new_x, new_y, self.bombs_list):
+        if self._game_map.is_walkable_position(new_x, new_y, self.bombs_list, self.wall_pass):
             self.x = new_x
             self.y = new_y
 
