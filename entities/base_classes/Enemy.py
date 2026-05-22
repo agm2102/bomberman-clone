@@ -19,6 +19,8 @@ class Enemy(BaseCharacter):
         self.animation_controller.add_animation("down_walk", Animation(self.frames[0:4], self.animation_speed, True))
         self.animation_controller.add_animation("death", Animation(self.frames[8:13], self.animation_speed * 3, False))
 
+        self.sprite = self.animation_controller.get_frame() 
+
     def update(self, bombs_list):
         self._check_collision_characters_bombs()
 
@@ -48,7 +50,7 @@ class Enemy(BaseCharacter):
         new_x = self.x + dx * self.speed
         new_y = self.y + dy * self.speed
 
-        if not self._game_map.is_walkable_position(new_x, new_y, bombs_list, self.wall_pass):
+        if not self.game_map.is_walkable_position(new_x, new_y, bombs_list, self.wall_pass):
 
             self.dir = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
 

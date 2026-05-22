@@ -14,6 +14,8 @@ class BaseEntity:
         self.sprite = None
 
     def draw(self, screen, camera=None):
+        if self.sprite is None:
+            return  # ← não crasha, só ignora
         pos = camera.apply(self) if camera else (self.x, self.y)
         screen.blit(self.sprite, pos)
 

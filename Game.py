@@ -55,9 +55,11 @@ class Game:
         self.screenGame.fill((0, 0, 0))  # limpa tela (preto)
 
         if self.CURRENT_SCREEN == 0:
-            self.screens["menu"].draw()
+            if self.screens["menu"] is not None:
+                self.screens["menu"].draw()
         elif self.CURRENT_SCREEN == 1:
-            self.screens["stage"].draw()
+            if self.screens["stage"] is not None:
+                self.screens["stage"].draw()
 
         pygame.display.flip()
 

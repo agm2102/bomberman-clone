@@ -35,14 +35,8 @@ class CollisionManager:
                 self.bomberman.apply_item_effect(self.item.get_type())
                 self.item.set_collected(True)
 
-    def _check_collision_player_door(self):
-        if self.map_door.is_locked() is False:
-            if self.map_door.get_rect().colliderect(self.bomberman.get_rect()):
-                print("Stage finalizado")
-
     def check(self):
         self._check_collision_player_enemies()
         self._check_collision_explosion_enemies_player()
         self._check_collision_player_item()
-        self._check_collision_player_door()
 

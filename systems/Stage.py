@@ -1,3 +1,4 @@
+from game_map.Door import Door
 from systems.CollisionManager import CollisionManager
 
 class Stage:
@@ -50,7 +51,8 @@ class Stage:
 
         self.game_map.update()
 
-        self.check_all_enemies_is_dead()
+        self.unlock_door()
+        self.is_stage_finished()
         self.remove_game_objects()
         self.collision_manager.check()
 
@@ -96,8 +98,13 @@ class Stage:
             self.game_map.remove_item()
 
     def is_stage_finished(self):
-       return self.stage_finished
+        if self.door.is_locked() is False:
+            if self.player.check_collision_player_door(self.door):
+                self.stage_finished = True
 
-    def check_all_enemies_is_dead(self):
+    def get_stage_finished(self):
+        return self.stage_finished
+
+    def unlock_door(self):
         if len(self.enemyList) == 0:
             self.door.set_locked(False)

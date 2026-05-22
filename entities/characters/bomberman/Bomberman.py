@@ -74,39 +74,41 @@ class Bomberman(BaseCharacter):
         self.animation_controller.add_animation("death", Animation(frames[12:19], 20, False))
 
     def draw(self, screen, camera=None):
-        # pisca quando invencível — alterna visível/invisível a cada 5 frames
-        if self.invencible_timer > 0 and self.invencible_timer % 10 < 5:
-            return  # não desenha — efeito de piscar
+        if self.is_alive:
+            # pisca quando invencível — alterna visível/invisível a cada 5 frames
+            if self.invencible_timer > 0 and self.invencible_timer % 10 < 5:
+                return  # não desenha — efeito de piscar
 
         pos = camera.apply(self) if camera else (self.x, self.y)
         screen.blit(self.sprite, pos)
 
     def update(self, events = None):
-        if self.invencible_timer > 0:
-            self.invencible_timer -= 1
+        frame = self.animation_controller.get_frame()
+        self.sprite = frame
 
-        self._check_collision_characters_bombs()
+        if self.lives == 0:
+            self.is_alive = False
 
-        if not self.is_alive:
+        if self.dir or self.is_alive is False:
+            self.animation_controller.update()
+
+        if self.is_alive:
+            self._check_collision_characters_bombs()
+            self.input_handler(events)
+
+            if self.invencible_timer > 0:
+                self.invencible_timer -= 1
+        else:
             self.animation_controller.change_current_animation("death", False)
             if self.animation_controller.finished():
                 return
-
-        if self.is_alive:
-            self.input_handler(events)
-
-        if self.dir is not None or not self.is_alive:
-            self.animation_controller.update()
-
-        frame = self.animation_controller.get_frame()
-        self.sprite = frame
 
     def move(self, direction):
         dx, dy = self.directions[direction]
         new_x = self.x + dx * self._speed
         new_y = self.y + dy * self._speed
 
-        if self._game_map.is_walkable_position(new_x, new_y, self.bombs_list, self.wall_pass):
+        if self.game_map.is_walkable_position(new_x, new_y, self.bombs_list, self.wall_pass):
             self.x = new_x
             self.y = new_y
 
@@ -114,6 +116,11 @@ class Bomberman(BaseCharacter):
         for bomb in self.bombs_list:
             if bomb.get_is_solid() is False and bomb.get_rect().colliderect(self.get_rect()) is False and self.bomb_pass is False:
                bomb.set_is_solid(True)
+
+    def check_collision_player_door(self, door):
+        if door.get_rect().colliderect(self.get_rect()):
+            return True
+        return False
 
     def get_list_bombs(self):
         return self.bombs_list
@@ -123,6 +130,23 @@ class Bomberman(BaseCharacter):
 
     def set_qtd_bombs(self, qtd_bomb):
         self.qtd_bombs += qtd_bomb
+
+    def set_game_map(self, game_map):
+        self.game_map = game_map
+
+    def get_rect(self):
+        m = 8  # ajusta esse valor
+        self.rect = pygame.Rect(
+            self.x + m,
+            self.y,
+            Settings.SPRITE_SIZE - m * 2,  # largura menor centralizada
+            Settings.SPRITE_SIZE  # altura completa
+        )
+        return self.rect
+
+    def move_to_initial_pos(self):
+        self.x = 1 * Settings.SPRITE_SIZE
+        self.y = 1 * Settings.SPRITE_SIZE + Settings.HUD_HEIGHT
 
     def input_handler(self, events):
         # Verifica KEYDOWN nos eventos recebidos

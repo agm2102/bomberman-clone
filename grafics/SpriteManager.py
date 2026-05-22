@@ -47,7 +47,7 @@ class SpriteManager:
         #characters
         "numbers_hud": ("assets/sprites/hud/characters/numbers/numbers_hud/", NUMBER_LETTER_WIDTH, NUMBER_LETTER_HEIGHT),
         "simbol" : ("assets/sprites/hud/characters/simbol/", NUMBER_LETTER_WIDTH, NUMBER_LETTER_HEIGHT),
-        "letters_hud" : ("assets/sprites/hud/characters/letters/letters_hud/", NUMBER_LETTER_WIDTH, NUMBER_LETTER_HEIGHT)
+        "letters_hud" : ("assets/sprites/hud/characters/letters/letters_hud/", NUMBER_LETTER_WIDTH, NUMBER_LETTER_HEIGHT),
     }
 
     def __new__(cls):

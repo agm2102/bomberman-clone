@@ -33,7 +33,7 @@ class Block(BaseEntity):
     def is_breakable(self):
         return self.breakable
 
-    def set_destroy(self):
+    def destroy_block(self):
         if self.door is not None :
             self.door.set_visible(True)
 

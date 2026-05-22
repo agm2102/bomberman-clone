@@ -7,7 +7,7 @@ class BaseCharacter(BaseEntity):
     def  __init__(self, x, y, game_map, sprite_manager, is_alive):
         super().__init__(x, y, sprite_manager)
         self.bombs_list = []
-        self._game_map = game_map
+        self.game_map = game_map
         self.dir = None
         self.rect = pygame.Rect(self.x, self.y, Settings.SPRITE_SIZE, Settings.SPRITE_SIZE)
         self.is_alive = is_alive
@@ -48,3 +48,4 @@ class BaseCharacter(BaseEntity):
 
     def get_is_alive(self):
         return  self.is_alive
+

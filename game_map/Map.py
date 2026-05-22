@@ -1,21 +1,17 @@
-from config.Settings import Settings
-from entities.base_classes.BaseEntity import BaseEntity
-from entities.objects.Bomb import Bomb
-from game_map.Block import Block
 import random
 import  pygame
-
+from config.Settings import Settings
+from game_map.Block import Block
 from game_map.Door import Door
 from game_map.Item import Item
 
-
-def bomberman_is_spawn_area(i, j):
+def bomberman_spawn_area(i, j):
     # player (canto superior esquerdo)
     if i < 3 and j < 3:
         return True
     return False
 
-def enemies_is_spawn_area(i, j):
+def enemies_spawn_area(i, j):
     # inimigos (metade direita, faixa central)
     if 20 <= j <= 28 and 5 <= i <= 8:
         return True
@@ -38,6 +34,7 @@ class Map:
         self.spawn_enemy_area_list = []
         self.sprite_manager = sprite_manager
         self.blocks_list = []
+        self.blocks_list.clear()
         self.mapa = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -66,20 +63,21 @@ class Map:
                                   sprite_manager.get("map")[GROUND], False, False, sprite_manager)
                     self.blocks_list.append(block)
 
-                    if (not (bomberman_is_spawn_area(i, j) or enemies_is_spawn_area(i, j))) and random.random() > 0.9:
+                    if (not (bomberman_spawn_area(i, j) or enemies_spawn_area(i, j))) and random.random() > 0.9:
                         block = Block(j * Settings.SPRITE_SIZE, Settings.HUD_HEIGHT + i * Settings.SPRITE_SIZE,
                                       sprite_manager.get("map")[BLOCK_DESTRUCTIBLE], True, True, sprite_manager)
                         self.blocks_list.append(block)
 
-                    if enemies_is_spawn_area(i, j):
+                    if enemies_spawn_area(i, j):
                         span_enemy_area = (j, i)
                         self.spawn_enemy_area_list.append(span_enemy_area)
 
         self.create_door()
 
     def is_walkable_position(self, x, y, bomb_list, wall_pass):
-        size_character = Settings.SPRITE_SIZE
-        character_rect = pygame.Rect(x, y, size_character, size_character)
+
+        m = 8  # mesma margem do get_rect()
+        character_rect = pygame.Rect(x + m, y, Settings.SPRITE_SIZE - m * 2, Settings.SPRITE_SIZE)
 
         for block in self.blocks_list:
             if block.is_solid():
@@ -91,11 +89,11 @@ class Map:
                 if block_rect.colliderect(character_rect):
                     return False
 
-        if bomb_list:
-            for bomb in bomb_list:
-                if bomb.get_is_solid():
-                    if bomb.get_rect().colliderect(character_rect):
-                        return False
+            if bomb_list:
+                for bomb in bomb_list:
+                    if bomb.get_is_solid():
+                        if bomb.get_rect().colliderect(character_rect):
+                            return False
         return True
 
     def get_random_breakable_block(self):
@@ -123,10 +121,14 @@ class Map:
 
     def check_explosion_hit_blocks(self, rect):
         for block in self.blocks_list:
-            if block.is_solid() and block.get_rect().colliderect(rect):
+            if block.is_solid():
+                block_rect = block.get_rect()
                 if block.is_breakable():
-                    block.set_destroy()
-                return True
+                    if block_rect.colliderect(rect):
+                        block.destroy_block()
+                        return True
+                if block_rect.colliderect(rect):
+                    return True
         return False
 
     def draw(self, screen, camera=None):
